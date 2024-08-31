@@ -28,4 +28,4 @@ keywords:
 home: https://www.sonatype.com/nexus-repository-oss
 icon: https://sonatype.github.io/helm3-charts/NexusRepo_Vertical.svg
 sources:
-  - https://github.com/sonatype/nexus-public
+  - https://github.com/cidverse/helm-charts

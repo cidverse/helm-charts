@@ -3,7 +3,16 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: {{ .Values.route.name }}
-  labels: {{ .Values.route.labels }}
+  labels:
+    {{- include "nexus.labels" $ | nindent 4 }}
+    {{- if $.Values.nexus.extraLabels }}
+      {{- with $.Values.nexus.extraLabels }}
+        {{ toYaml . | indent 4 }}
+      {{- end }}
+    {{- end }}
+    {{- range $key, $value := $.Values.route.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
   annotations:
     {{- range $key, $value := .Values.route.annotations }}
     {{ $key }}: {{ $value | quote }}

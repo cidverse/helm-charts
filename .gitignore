@@ -1,0 +1,6 @@
+# ci
+.dist
+.tmp
+
+# packaged charts
+*.tgz

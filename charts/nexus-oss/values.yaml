@@ -6,7 +6,7 @@ deploymentStrategy: Recreate
 image:
   # Sonatype Official Public Image
   repository: sonatype/nexus3
-  tag: 3.64.0
+  tag: 3.71.0-ubi
   pullPolicy: IfNotPresent
 imagePullSecrets:
 # for image registries that require login, specify the name of the existing
@@ -109,6 +109,7 @@ deployment:
 ingress:
   enabled: false
   ingressClassName: nginx
+  labels: []
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
   hostPath: /
