@@ -1,0 +1,1 @@
+{{ include "chart-library.snippets.deployment" (dict "context" . "service" .Values.service "deployment" .Values.deployment) }}

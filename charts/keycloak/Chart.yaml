@@ -1,0 +1,39 @@
+apiVersion: v2
+
+# metadata
+name: keycloak
+description: |
+  Keycloak is an open-source Identity and Access Management (IAM) solution for modern applications and services.
+  It provides Single Sign-On (SSO), user federation, strong authentication, and fine-grained authorization.
+type: application
+keywords:
+- keycloak
+- identity
+- identity-management
+- identity-provider
+- authentication
+- authorization
+- single-sign-on
+- sso
+- oidc
+- oauth2
+- saml
+maintainers:
+- name: CIDVerse
+  url: https://github.com/cidverse
+sources:
+- https://github.com/cidverse/helm-charts/tree/main/charts/keycloak
+
+# version
+version: "26.3.2"
+appVersion: "26.3.2"
+
+# annotations
+annotations:
+  artifacthub.io/category: security
+
+# dependencies
+dependencies:
+- name: chart-library
+  version: "1.x.x"
+  repository: file://../chart-library

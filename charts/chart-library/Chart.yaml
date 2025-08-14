@@ -1,0 +1,16 @@
+apiVersion: v2
+
+# metadata
+name: chart-library
+description: |
+  A reusable Helm library chart providing shared logic and templates for CIDVerse charts. Not intended for direct deployment.
+type: library
+maintainers:
+- name: CIDVerse
+  url: https://github.com/cidverse/helm-charts
+sources:
+- https://github.com/cidverse/helm-charts/tree/main/charts/chart-library
+
+# version
+version: "1.0.0"
+appVersion: "1.0.0"

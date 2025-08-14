@@ -1,0 +1,1 @@
+{{ include "chart-library.snippets.ingress" (dict "context" . "ingress" .Values.ingress "service" .Values.service) }}

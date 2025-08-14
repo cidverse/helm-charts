@@ -2,5 +2,17 @@
 .dist
 .tmp
 
+# chart dependencies
+charts/**/charts
+
 # packaged charts
 *.tgz
+
+# various IDEs
+.project
+.idea/
+*.tmproj
+.vscode/
+
+# notes
+notes

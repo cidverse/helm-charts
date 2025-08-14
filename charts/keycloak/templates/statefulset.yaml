@@ -1,0 +1,1 @@
+{{ include "chart-library.snippets.statefulset" (dict "context" . "service" .Values.service "statefulset" .Values.statefulset) }}
