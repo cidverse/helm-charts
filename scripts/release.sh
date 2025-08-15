@@ -24,7 +24,7 @@ CHART_TGZ="${CHART_NAME}-${CHART_VERSION}.tgz"
 # registries
 registries=(
   "oci://ghcr.io/cidverse/helm-charts"
-  #"oci://registry.gitlab.com/cidverse/helm-charts"
+  "oci://registry.gitlab.com/cidverse/helm-charts"
 )
 
 # package chart
