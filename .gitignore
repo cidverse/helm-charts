@@ -3,7 +3,7 @@
 .tmp
 
 # chart dependencies
-charts/**/charts
+charts/**/charts/*.tgz
 
 # packaged charts
 *.tgz
