@@ -25,7 +25,7 @@ sources:
 - https://github.com/cidverse/helm-charts/tree/main/charts/keycloak
 
 # version
-version: "26.3.2"
+version: "0.1.0"
 appVersion: "26.3.2"
 
 # annotations
