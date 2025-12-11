@@ -21,6 +21,9 @@ metadata:
   name: {{ include "chart-library.fullname" $root }}{{ if $ingress.name }}-{{ $ingress.name }}{{ end }}
   labels:
     {{- include "chart-library.labels" $root | nindent 4 }}
+    {{- with $ingress.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   {{- with $ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
