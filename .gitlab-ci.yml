@@ -7,12 +7,7 @@
 default:
   image: quay.io/podman/stable@sha256:866bbcac26adb7ff238145405fa0ade33bd7e9c7bb77a5c05f819dce8a753063 # v5.5.2-immutable
   before_script:
-    - curl -L -o /usr/local/bin/cid https://github.com/cidverse/cid/releases/download/v0.5.0/linux_amd64
-    - chmod +x /usr/local/bin/cid
-    - cid version
-    - cid catalog update
-    - cid catalog list
-    - cid executables update
+    - bash .cid/scripts/install.sh "0.6.0" ""
 
 # variables
 variables:

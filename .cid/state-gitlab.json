@@ -437,7 +437,7 @@
         "cid": {
           "id": "cid",
           "type": "binary",
-          "version": "0.5.0"
+          "version": "0.6.0"
         },
         "quay.io/podman/stable": {
           "id": "quay.io/podman/stable",
@@ -453,7 +453,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     },
     "Pull Request": {
@@ -891,7 +892,7 @@
         "cid": {
           "id": "cid",
           "type": "binary",
-          "version": "0.5.0"
+          "version": "0.6.0"
         },
         "quay.io/podman/stable": {
           "id": "quay.io/podman/stable",
@@ -907,7 +908,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     },
     "Release": {
@@ -1393,7 +1395,7 @@
         "cid": {
           "id": "cid",
           "type": "binary",
-          "version": "0.5.0"
+          "version": "0.6.0"
         },
         "quay.io/podman/stable": {
           "id": "quay.io/podman/stable",
@@ -1409,7 +1411,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     },
     "Main": {
@@ -1850,7 +1853,7 @@
         "cid": {
           "id": "cid",
           "type": "binary",
-          "version": "0.5.0"
+          "version": "0.6.0"
         },
         "quay.io/podman/stable": {
           "id": "quay.io/podman/stable",
@@ -1866,7 +1869,8 @@
         ".gitattributes",
         ".editorconfig",
         "renovate.json",
-        "CODEOWNERS"
+        "CODEOWNERS",
+        "SECURITY.md"
       ]
     }
   }
