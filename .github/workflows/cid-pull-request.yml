@@ -19,6 +19,7 @@ on:
       - '.editorconfig'
       - 'renovate.json'
       - 'CODEOWNERS'
+      - 'SECURITY.md'
 
 # permissions, see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions and https://docs.github.com/en/rest/overview/permissions-required-for-github-apps
 permissions:
@@ -48,54 +49,6 @@ env:
 
 # jobs
 jobs:
-  # helm-build [keycloak]
-  helm-build-keycloak:
-    name: 'helm-build [keycloak]'
-    runs-on: ubuntu-24.04 # https://github.com/actions/runner-images
-    permissions:
-      id-token: write # provenance signing
-    timeout-minutes: 10
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
-        with:
-          disable-telemetry: true
-          egress-policy: "${{ env.EGRESS_POLICY }}"
-          allowed-endpoints: >-
-            github.com:443
-            api.github.com:443
-            codeload.github.com:443
-            uploads.github.com:443
-            objects.githubusercontent.com:443
-            raw.githubusercontent.com:443
-            release-assets.githubusercontent.com:443
-            ghcr.io:443
-            pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Action - helm-build [keycloak]
-        env:
-          CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
-          CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: |
-          cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-build-keycloak"
-      - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: "helm-build-keycloak-${{ github.run_id }}"
-          path: ".dist/helm-build-keycloak/"
-          retention-days: 1
-          if-no-files-found: ignore
-          compression-level: 6
-          include-hidden-files: true
   # helm-build [chart-library]
   helm-build-chart-library:
     name: 'helm-build [chart-library]'
@@ -105,7 +58,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -119,15 +72,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - helm-build [chart-library]
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -136,7 +88,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-build-chart-library"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "helm-build-chart-library-${{ github.run_id }}"
           path: ".dist/helm-build-chart-library/"
@@ -144,16 +96,16 @@ jobs:
           if-no-files-found: ignore
           compression-level: 6
           include-hidden-files: true
-  # helm-lint [keycloak]
-  helm-lint-keycloak:
-    name: 'helm-lint [keycloak]'
+  # helm-build [keycloak]
+  helm-build-keycloak:
+    name: 'helm-build [keycloak]'
     runs-on: ubuntu-24.04 # https://github.com/actions/runner-images
     permissions:
       id-token: write # provenance signing
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -167,27 +119,26 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Action - helm-lint [keycloak]
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
+      - name: Action - helm-build [keycloak]
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
           CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
-          cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-lint-keycloak"
+          cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-build-keycloak"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: "helm-lint-keycloak-${{ github.run_id }}"
-          path: ".dist/helm-lint-keycloak/"
+          name: "helm-build-keycloak-${{ github.run_id }}"
+          path: ".dist/helm-build-keycloak/"
           retention-days: 1
           if-no-files-found: ignore
           compression-level: 6
@@ -201,7 +152,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -215,15 +166,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - helm-lint [chart-library]
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -232,10 +182,57 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-lint-chart-library"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "helm-lint-chart-library-${{ github.run_id }}"
           path: ".dist/helm-lint-chart-library/"
+          retention-days: 1
+          if-no-files-found: ignore
+          compression-level: 6
+          include-hidden-files: true
+  # helm-lint [keycloak]
+  helm-lint-keycloak:
+    name: 'helm-lint [keycloak]'
+    runs-on: ubuntu-24.04 # https://github.com/actions/runner-images
+    permissions:
+      id-token: write # provenance signing
+    timeout-minutes: 10
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          disable-telemetry: true
+          egress-policy: "${{ env.EGRESS_POLICY }}"
+          allowed-endpoints: >-
+            github.com:443
+            api.github.com:443
+            codeload.github.com:443
+            uploads.github.com:443
+            objects.githubusercontent.com:443
+            raw.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
+            ghcr.io:443
+            pkg-containers.githubusercontent.com:443
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
+      - name: Action - helm-lint [keycloak]
+        env:
+          CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
+          CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: |
+          cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-lint-keycloak"
+      - name: Upload Outputs
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: "helm-lint-keycloak-${{ github.run_id }}"
+          path: ".dist/helm-lint-keycloak/"
           retention-days: 1
           if-no-files-found: ignore
           compression-level: 6
@@ -249,7 +246,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -263,15 +260,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - gitleaks-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -280,7 +276,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "gitleaks-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "gitleaks-scan-${{ github.run_id }}"
           path: ".dist/gitleaks-scan/"
@@ -297,7 +293,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -312,15 +308,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - semgrep-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -331,7 +326,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "semgrep-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "semgrep-scan-${{ github.run_id }}"
           path: ".dist/semgrep-scan/"
@@ -348,7 +343,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -363,15 +358,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - trivyfs-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -380,7 +374,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "trivyfs-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "trivyfs-scan-${{ github.run_id }}"
           path: ".dist/trivyfs-scan/"
@@ -397,7 +391,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -414,15 +408,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - sonarqube-scan
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -437,10 +430,59 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "sonarqube-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "sonarqube-scan-${{ github.run_id }}"
           path: ".dist/sonarqube-scan/"
+          retention-days: 1
+          if-no-files-found: ignore
+          compression-level: 6
+          include-hidden-files: true
+  # zizmor-scan
+  zizmor-scan:
+    name: 'zizmor-scan'
+    runs-on: ubuntu-24.04 # https://github.com/actions/runner-images
+    permissions:
+      id-token: write # provenance signing
+    timeout-minutes: 10
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          disable-telemetry: true
+          egress-policy: "${{ env.EGRESS_POLICY }}"
+          allowed-endpoints: >-
+            github.com:443
+            api.github.com:443
+            codeload.github.com:443
+            uploads.github.com:443
+            objects.githubusercontent.com:443
+            raw.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
+            ghcr.io:443
+            pkg-containers.githubusercontent.com:443
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
+      - name: Action - zizmor-scan
+        env:
+          CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
+          CID_LOGLEVEL: "${{ env.CID_LOGLEVEL }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GH_HOSTNAME: "${{ secrets.GH_HOSTNAME || vars.GH_HOSTNAME }}"
+          GH_TOKEN: "${{ secrets.GH_TOKEN || vars.GH_TOKEN }}"
+        run: |
+          cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "zizmor-scan"
+      - name: Upload Outputs
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: "zizmor-scan-${{ github.run_id }}"
+          path: ".dist/zizmor-scan/"
           retention-days: 1
           if-no-files-found: ignore
           compression-level: 6
@@ -454,7 +496,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           disable-telemetry: true
           egress-policy: "${{ env.EGRESS_POLICY }}"
@@ -471,15 +513,14 @@ jobs:
             release-assets.githubusercontent.com:443
             ghcr.io:443
             pkg-containers.githubusercontent.com:443
-      - name: Setup Tools
-        uses: cidverse/ghact-cid-setup@c6dac0517d28bd8871c195fee9a6bd5a5854d5cb # v0.2.0
-        with:
-          version: "v0.5.0"
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Prepare Tooling
+        shell: bash
+        run: bash .cid/scripts/install.sh "0.6.0" ""
       - name: Action - codecov-upload
         env:
           CID_WORKFLOW: "${{ env.CID_WORKFLOW }}"
@@ -489,7 +530,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "codecov-upload"
       - name: Upload Outputs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: "codecov-upload-${{ github.run_id }}"
           path: ".dist/codecov-upload/"
