@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.5.0",
+      "version": "0.6.0",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 10,
@@ -25,63 +25,6 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [chart-library]",
-            "slug": "helm-build-chart-library",
-            "stage": "build",
-            "scope": "module",
-            "action": "builtin://actions/helm-build",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "helm-chart",
-                  "format": "tgz"
-                }
-              ]
-            },
-            "order": 0
-          },
-          {
-            "id": "1",
             "name": "helm-build [keycloak]",
             "slug": "helm-build-keycloak",
             "stage": "build",
@@ -135,17 +78,74 @@
                 }
               ]
             },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "helm-build [chart-library]",
+            "slug": "helm-build-chart-library",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 1
           },
           {
             "id": "2",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -189,13 +189,13 @@
           },
           {
             "id": "3",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -434,16 +434,17 @@
         ]
       },
       "workflow_dependency": {
-        "cid": {
-          "id": "cid",
-          "type": "binary",
-          "version": "0.6.0"
+        "pkg:docker/podman/stable?repository_url=quay.io": {
+          "id": "podman/stable",
+          "type": "docker",
+          "version": "v5.7.0-immutable",
+          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "repository": "quay.io"
         },
-        "quay.io/podman/stable": {
-          "id": "quay.io/podman/stable",
-          "type": "oci-container",
-          "version": "v5.5.2-immutable",
-          "hash": "866bbcac26adb7ff238145405fa0ade33bd7e9c7bb77a5c05f819dce8a753063"
+        "pkg:github/cidverse/cid": {
+          "id": "cidverse/cid",
+          "type": "github",
+          "version": "0.6.0"
         }
       },
       "ignore_files": [
@@ -458,7 +459,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.5.0",
+      "version": "0.6.0",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 10,
@@ -480,63 +481,6 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [chart-library]",
-            "slug": "helm-build-chart-library",
-            "stage": "build",
-            "scope": "module",
-            "action": "builtin://actions/helm-build",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "helm-chart",
-                  "format": "tgz"
-                }
-              ]
-            },
-            "order": 0
-          },
-          {
-            "id": "1",
             "name": "helm-build [keycloak]",
             "slug": "helm-build-keycloak",
             "stage": "build",
@@ -590,17 +534,74 @@
                 }
               ]
             },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "helm-build [chart-library]",
+            "slug": "helm-build-chart-library",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 1
           },
           {
             "id": "2",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -644,13 +645,13 @@
           },
           {
             "id": "3",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -889,16 +890,17 @@
         ]
       },
       "workflow_dependency": {
-        "cid": {
-          "id": "cid",
-          "type": "binary",
-          "version": "0.6.0"
+        "pkg:docker/podman/stable?repository_url=quay.io": {
+          "id": "podman/stable",
+          "type": "docker",
+          "version": "v5.7.0-immutable",
+          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "repository": "quay.io"
         },
-        "quay.io/podman/stable": {
-          "id": "quay.io/podman/stable",
-          "type": "oci-container",
-          "version": "v5.5.2-immutable",
-          "hash": "866bbcac26adb7ff238145405fa0ade33bd7e9c7bb77a5c05f819dce8a753063"
+        "pkg:github/cidverse/cid": {
+          "id": "cidverse/cid",
+          "type": "github",
+          "version": "0.6.0"
         }
       },
       "ignore_files": [
@@ -913,7 +915,7 @@
       ]
     },
     "Release": {
-      "version": "0.5.0",
+      "version": "0.6.0",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 10,
@@ -939,13 +941,13 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [chart-library]",
-            "slug": "helm-build-chart-library",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -996,13 +998,13 @@
           },
           {
             "id": "1",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
+            "name": "helm-build [chart-library]",
+            "slug": "helm-build-chart-library",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -1392,16 +1394,17 @@
         ]
       },
       "workflow_dependency": {
-        "cid": {
-          "id": "cid",
-          "type": "binary",
-          "version": "0.6.0"
+        "pkg:docker/podman/stable?repository_url=quay.io": {
+          "id": "podman/stable",
+          "type": "docker",
+          "version": "v5.7.0-immutable",
+          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "repository": "quay.io"
         },
-        "quay.io/podman/stable": {
-          "id": "quay.io/podman/stable",
-          "type": "oci-container",
-          "version": "v5.5.2-immutable",
-          "hash": "866bbcac26adb7ff238145405fa0ade33bd7e9c7bb77a5c05f819dce8a753063"
+        "pkg:github/cidverse/cid": {
+          "id": "cidverse/cid",
+          "type": "github",
+          "version": "0.6.0"
         }
       },
       "ignore_files": [
@@ -1416,7 +1419,7 @@
       ]
     },
     "Main": {
-      "version": "0.5.0",
+      "version": "0.6.0",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 10,
@@ -1441,63 +1444,6 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [chart-library]",
-            "slug": "helm-build-chart-library",
-            "stage": "build",
-            "scope": "module",
-            "action": "builtin://actions/helm-build",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "helm-chart",
-                  "format": "tgz"
-                }
-              ]
-            },
-            "order": 0
-          },
-          {
-            "id": "1",
             "name": "helm-build [keycloak]",
             "slug": "helm-build-keycloak",
             "stage": "build",
@@ -1551,17 +1497,74 @@
                 }
               ]
             },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "helm-build [chart-library]",
+            "slug": "helm-build-chart-library",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 1
           },
           {
             "id": "2",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -1605,13 +1608,13 @@
           },
           {
             "id": "3",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -1850,16 +1853,17 @@
         ]
       },
       "workflow_dependency": {
-        "cid": {
-          "id": "cid",
-          "type": "binary",
-          "version": "0.6.0"
+        "pkg:docker/podman/stable?repository_url=quay.io": {
+          "id": "podman/stable",
+          "type": "docker",
+          "version": "v5.7.0-immutable",
+          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "repository": "quay.io"
         },
-        "quay.io/podman/stable": {
-          "id": "quay.io/podman/stable",
-          "type": "oci-container",
-          "version": "v5.5.2-immutable",
-          "hash": "866bbcac26adb7ff238145405fa0ade33bd7e9c7bb77a5c05f819dce8a753063"
+        "pkg:github/cidverse/cid": {
+          "id": "cidverse/cid",
+          "type": "github",
+          "version": "0.6.0"
         }
       },
       "ignore_files": [
