@@ -701,14 +701,14 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+          "version": "v7.0.0",
+          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v5.0.0",
-          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+          "version": "v6.0.0",
+          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
@@ -1432,14 +1432,14 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+          "version": "v7.0.0",
+          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v5.0.0",
-          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+          "version": "v6.0.0",
+          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
@@ -2215,14 +2215,14 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+          "version": "v7.0.0",
+          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v5.0.0",
-          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+          "version": "v6.0.0",
+          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
@@ -2949,14 +2949,14 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+          "version": "v7.0.0",
+          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v5.0.0",
-          "hash": "330a01c490aca151604b8cf639adc76d48f6c5d4"
+          "version": "v6.0.0",
+          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",

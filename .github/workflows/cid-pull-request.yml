@@ -88,7 +88,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-build-keycloak"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "helm-build-keycloak-${{ github.run_id }}"
           path: ".dist/helm-build-keycloak/"
@@ -135,7 +135,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-build-chart-library"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "helm-build-chart-library-${{ github.run_id }}"
           path: ".dist/helm-build-chart-library/"
@@ -182,7 +182,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-lint-keycloak"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "helm-lint-keycloak-${{ github.run_id }}"
           path: ".dist/helm-lint-keycloak/"
@@ -229,7 +229,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "helm-lint-chart-library"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "helm-lint-chart-library-${{ github.run_id }}"
           path: ".dist/helm-lint-chart-library/"
@@ -276,7 +276,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "gitleaks-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "gitleaks-scan-${{ github.run_id }}"
           path: ".dist/gitleaks-scan/"
@@ -326,7 +326,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "semgrep-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "semgrep-scan-${{ github.run_id }}"
           path: ".dist/semgrep-scan/"
@@ -374,7 +374,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "trivyfs-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "trivyfs-scan-${{ github.run_id }}"
           path: ".dist/trivyfs-scan/"
@@ -430,7 +430,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "sonarqube-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "sonarqube-scan-${{ github.run_id }}"
           path: ".dist/sonarqube-scan/"
@@ -479,7 +479,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "zizmor-scan"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "zizmor-scan-${{ github.run_id }}"
           path: ".dist/zizmor-scan/"
@@ -530,7 +530,7 @@ jobs:
         run: |
           cid --log-level=${CID_LOGLEVEL:-info} plan execute --state-file ".cid/state-github.json" --state-wf-name "pull-request" --step "codecov-upload"
       - name: Upload Outputs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: "codecov-upload-${{ github.run_id }}"
           path: ".dist/codecov-upload/"
