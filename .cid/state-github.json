@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.6.0",
+      "version": "0.8.0",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 10,
@@ -25,66 +25,6 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
-            "stage": "build",
-            "scope": "module",
-            "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "helm-chart",
-                  "format": "tgz"
-                }
-              ]
-            },
-            "order": 0
-          },
-          {
-            "id": "1",
             "name": "helm-build [chart-library]",
             "slug": "helm-build-chart-library",
             "stage": "build",
@@ -141,17 +81,77 @@
                 }
               ]
             },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 1
           },
           {
             "id": "2",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -198,13 +198,13 @@
           },
           {
             "id": "3",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -695,31 +695,31 @@
         "pkg:github-action/actions/checkout": {
           "id": "actions/checkout",
           "type": "github-action",
-          "version": "v6.0.1",
-          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+          "version": "v6.0.2",
+          "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
         },
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
+          "version": "v8.0.0",
+          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
+          "version": "v7.0.0",
+          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.14.0",
-          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+          "version": "v2.15.0",
+          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.6.0"
+          "version": "0.8.0"
         }
       },
       "ignore_files": [
@@ -734,7 +734,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.6.0",
+      "version": "0.8.0",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 10,
@@ -756,66 +756,6 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
-            "stage": "build",
-            "scope": "module",
-            "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "helm-chart",
-                  "format": "tgz"
-                }
-              ]
-            },
-            "order": 0
-          },
-          {
-            "id": "1",
             "name": "helm-build [chart-library]",
             "slug": "helm-build-chart-library",
             "stage": "build",
@@ -872,17 +812,77 @@
                 }
               ]
             },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 1
           },
           {
             "id": "2",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -929,13 +929,13 @@
           },
           {
             "id": "3",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -1426,31 +1426,31 @@
         "pkg:github-action/actions/checkout": {
           "id": "actions/checkout",
           "type": "github-action",
-          "version": "v6.0.1",
-          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+          "version": "v6.0.2",
+          "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
         },
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
+          "version": "v8.0.0",
+          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
+          "version": "v7.0.0",
+          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.14.0",
-          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+          "version": "v2.15.0",
+          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.6.0"
+          "version": "0.8.0"
         }
       },
       "ignore_files": [
@@ -1465,7 +1465,7 @@
       ]
     },
     "Release": {
-      "version": "0.6.0",
+      "version": "0.8.0",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 10,
@@ -1491,13 +1491,13 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
+            "name": "helm-build [chart-library]",
+            "slug": "helm-build-chart-library",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -1551,13 +1551,13 @@
           },
           {
             "id": "1",
-            "name": "helm-build [chart-library]",
-            "slug": "helm-build-chart-library",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -2209,31 +2209,31 @@
         "pkg:github-action/actions/checkout": {
           "id": "actions/checkout",
           "type": "github-action",
-          "version": "v6.0.1",
-          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+          "version": "v6.0.2",
+          "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
         },
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
+          "version": "v8.0.0",
+          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
+          "version": "v7.0.0",
+          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.14.0",
-          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+          "version": "v2.15.0",
+          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.6.0"
+          "version": "0.8.0"
         }
       },
       "ignore_files": [
@@ -2248,7 +2248,7 @@
       ]
     },
     "Main": {
-      "version": "0.6.0",
+      "version": "0.8.0",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 10,
@@ -2273,66 +2273,6 @@
         "steps": [
           {
             "id": "0",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
-            "stage": "build",
-            "scope": "module",
-            "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "helm-chart",
-                  "format": "tgz"
-                }
-              ]
-            },
-            "order": 0
-          },
-          {
-            "id": "1",
             "name": "helm-build [chart-library]",
             "slug": "helm-build-chart-library",
             "stage": "build",
@@ -2389,17 +2329,77 @@
                 }
               ]
             },
+            "order": 0
+          },
+          {
+            "id": "1",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 1
           },
           {
             "id": "2",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
             "run-if-changed": [
               "**/*"
             ],
@@ -2446,13 +2446,13 @@
           },
           {
             "id": "3",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
             "stage": "lint",
             "scope": "module",
             "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
             "run-if-changed": [
               "**/*"
             ],
@@ -2943,31 +2943,31 @@
         "pkg:github-action/actions/checkout": {
           "id": "actions/checkout",
           "type": "github-action",
-          "version": "v6.0.1",
-          "hash": "8e8c483db84b4bee98b60c0593521ed34d9990e8"
+          "version": "v6.0.2",
+          "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
         },
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "37930b1c2abaa49bbe596cd826c3c89aef350131"
+          "version": "v8.0.0",
+          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v6.0.0",
-          "hash": "b7c566a772e6b6bfb58ed0dc250532a479d7789f"
+          "version": "v7.0.0",
+          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.14.0",
-          "hash": "20cf305ff2072d973412fa9b1e3a4f227bda3c76"
+          "version": "v2.15.0",
+          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.6.0"
+          "version": "0.8.0"
         }
       },
       "ignore_files": [
