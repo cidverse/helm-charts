@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 10,
@@ -701,8 +701,8 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v8.0.0",
-          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
+          "version": "v8.0.1",
+          "hash": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
@@ -713,13 +713,13 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.15.0",
-          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
+          "version": "v2.16.0",
+          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
@@ -734,7 +734,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 10,
@@ -1432,8 +1432,8 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v8.0.0",
-          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
+          "version": "v8.0.1",
+          "hash": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
@@ -1444,13 +1444,13 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.15.0",
-          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
+          "version": "v2.16.0",
+          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
@@ -1465,7 +1465,7 @@
       ]
     },
     "Release": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 10,
@@ -2215,8 +2215,8 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v8.0.0",
-          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
+          "version": "v8.0.1",
+          "hash": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
@@ -2227,13 +2227,13 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.15.0",
-          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
+          "version": "v2.16.0",
+          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
@@ -2248,7 +2248,7 @@
       ]
     },
     "Main": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 10,
@@ -2949,8 +2949,8 @@
         "pkg:github-action/actions/download-artifact": {
           "id": "actions/download-artifact",
           "type": "github-action",
-          "version": "v8.0.0",
-          "hash": "70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3"
+          "version": "v8.0.1",
+          "hash": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
         },
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
@@ -2961,13 +2961,13 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.15.0",
-          "hash": "a90bcbc6539c36a85cdfeb73f7e2f433735f215b"
+          "version": "v2.16.0",
+          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
