@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 10,
@@ -437,14 +437,14 @@
         "pkg:docker/podman/stable?repository_url=quay.io": {
           "id": "podman/stable",
           "type": "docker",
-          "version": "v5.7.0-immutable",
-          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "version": "v5.8.1-immutable",
+          "hash": "42d8b3d789333f07e631305325a02b4ab33c3f107413e04b612973a72f1d7deb",
           "repository": "quay.io"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
@@ -459,7 +459,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 10,
@@ -893,14 +893,14 @@
         "pkg:docker/podman/stable?repository_url=quay.io": {
           "id": "podman/stable",
           "type": "docker",
-          "version": "v5.7.0-immutable",
-          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "version": "v5.8.1-immutable",
+          "hash": "42d8b3d789333f07e631305325a02b4ab33c3f107413e04b612973a72f1d7deb",
           "repository": "quay.io"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
@@ -915,7 +915,7 @@
       ]
     },
     "Release": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 10,
@@ -1397,14 +1397,14 @@
         "pkg:docker/podman/stable?repository_url=quay.io": {
           "id": "podman/stable",
           "type": "docker",
-          "version": "v5.7.0-immutable",
-          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "version": "v5.8.1-immutable",
+          "hash": "42d8b3d789333f07e631305325a02b4ab33c3f107413e04b612973a72f1d7deb",
           "repository": "quay.io"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
@@ -1419,7 +1419,7 @@
       ]
     },
     "Main": {
-      "version": "0.8.0",
+      "version": "0.9.0",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 10,
@@ -1856,14 +1856,14 @@
         "pkg:docker/podman/stable?repository_url=quay.io": {
           "id": "podman/stable",
           "type": "docker",
-          "version": "v5.7.0-immutable",
-          "hash": "e373092f93d45249cb4409d4bff2d71f26d808a1dae18ed78d3f7c18f82c5fea",
+          "version": "v5.8.1-immutable",
+          "hash": "42d8b3d789333f07e631305325a02b4ab33c3f107413e04b612973a72f1d7deb",
           "repository": "quay.io"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.8.0"
+          "version": "0.9.0"
         }
       },
       "ignore_files": [
