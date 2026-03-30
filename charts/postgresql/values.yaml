@@ -1,0 +1,104 @@
+global:
+  # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  imagePullSecrets: []
+
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# workload
+statefulset:
+  enabled: true
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  image:
+    repository: docker.io/library/postgres
+    tag: "18.3"
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  defaultEnv:
+    - name: POSTGRES_DB
+      value: app
+    - name: POSTGRES_USER
+      value: app
+    - name: POSTGRES_PASSWORD
+      value: app
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+  env: []
+  extraEnv: []
+  envFrom: []
+  extraEnvFrom: []
+  startupProbe:
+    tcpSocket:
+      port: 5432
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    failureThreshold: 30
+    timeoutSeconds: 1
+  livenessProbe:
+    tcpSocket:
+      port: 5432
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 1
+  readinessProbe:
+    tcpSocket:
+      port: 5432
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 1
+  resources: {}
+  volumeMounts:
+    - name: data
+      mountPath: /var/lib/postgresql/data
+  volumes:
+    - name: data
+      emptyDir: {}
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# persistence
+persistence:
+  enabled: false
+  existingClaim: ""
+  name: ""
+  nameSuffix: data
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  storageClassName:
+  annotations: {}
+  labels: {}
+  volumeMode: Filesystem
+
+# postgresql service
+service:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      protocol: TCP

@@ -1,0 +1,17 @@
+{{- if .Values.statefulset.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chart-library.fullname" . }}-headless
+  labels:
+    {{- include "chart-library.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - name: {{ (index .Values.service.ports 0).name }}
+      port: {{ (index .Values.service.ports 0).port }}
+      targetPort: {{ (index .Values.service.ports 0).targetPort | default (index .Values.service.ports 0).port }}
+      protocol: {{ (index .Values.service.ports 0).protocol | default "TCP" }}
+  selector:
+    {{- include "chart-library.selectorLabels" . | nindent 4 }}
+{{- end }}

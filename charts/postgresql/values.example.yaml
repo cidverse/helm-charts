@@ -1,0 +1,26 @@
+statefulset:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: docker.io/library/postgres
+    tag: "18.3"
+  env:
+    - name: POSTGRES_PASSWORD
+      value: "<CHANGE_ME>"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+persistence:
+  enabled: true
+  storageClassName:
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+service:
+  type: ClusterIP

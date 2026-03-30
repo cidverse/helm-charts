@@ -42,7 +42,7 @@ spec:
         {{- end }}
     spec:
       {{- include "chart-library.resolvePullSecrets" (dict "images" (list $sts.image) "context" $context) | nindent 6 }}
-      serviceAccountName: {{ include "chart-library.serviceAccountName" (dict "context" $context "serviceAccount" $context.serviceAccount) }}
+      serviceAccountName: {{ include "chart-library.serviceAccountName" (dict "context" $context "serviceAccount" $context.Values.serviceAccount) }}
       {{- with $sts.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -67,14 +67,15 @@ spec:
           {{- if $sts.args }}
           args: {{ toYaml $sts.args | nindent 12 }}
           {{- end }}
-          {{- if or $sts.env $sts.extraEnv }}
+          {{- $baseEnv := $sts.env }}
+          {{- $overrideEnv := $sts.extraEnv }}
+          {{- if hasKey $sts "defaultEnv" }}
+            {{- $baseEnv = $sts.defaultEnv }}
+            {{- $overrideEnv = concat (default (list) $sts.env) (default (list) $sts.extraEnv) }}
+          {{- end }}
+          {{- if or $baseEnv $overrideEnv }}
           env:
-          {{- with $sts.env }}
-          {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with $sts.extraEnv }}
-          {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- include "chart-library.snippets.mergedEnv" (dict "env" $baseEnv "extraEnv" $overrideEnv) | nindent 12 }}
           {{- end }}
           {{- if or $sts.envFrom $sts.extraEnvFrom }}
           envFrom:

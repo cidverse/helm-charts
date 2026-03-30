@@ -1,0 +1,32 @@
+apiVersion: v2
+
+# metadata
+name: postgresql
+description: |
+  PostgreSQL single-node Helm chart.
+  Intended for simple development and non-HA workloads.
+type: application
+keywords:
+- postgres
+- postgresql
+- database
+- sql
+maintainers:
+- name: CIDVerse
+  url: https://github.com/cidverse
+sources:
+- https://github.com/cidverse/helm-charts/tree/main/charts/postgresql
+
+# version
+version: "0.1.0"
+appVersion: "18.3"
+
+# annotations
+annotations:
+  artifacthub.io/category: database
+
+# dependencies
+dependencies:
+- name: chart-library
+  version: "1.x.x"
+  repository: file://../chart-library

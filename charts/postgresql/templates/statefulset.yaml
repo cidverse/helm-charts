@@ -1,0 +1,6 @@
+{{- $statefulset := deepCopy .Values.statefulset -}}
+{{- if .Values.persistence.enabled -}}
+  {{- $claimName := .Values.persistence.existingClaim | default (include "chart-library.pvcName" (dict "context" . "pvc" .Values.persistence)) -}}
+  {{- $_ := set $statefulset "volumes" (list (dict "name" "data" "persistentVolumeClaim" (dict "claimName" $claimName))) -}}
+{{- end -}}
+{{ include "chart-library.snippets.statefulset" (dict "context" . "service" .Values.service "statefulset" $statefulset) }}
