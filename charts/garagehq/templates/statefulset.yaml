@@ -1,0 +1,16 @@
+{{- $statefulset := deepCopy .Values.statefulset -}}
+{{- if .Values.persistence.enabled -}}
+  {{- $claimName := .Values.persistence.existingClaim | default (include "chart-library.pvcName" (dict "context" . "pvc" .Values.persistence)) -}}
+  {{- $_ := set $statefulset "volumes" (list (dict "name" "data" "persistentVolumeClaim" (dict "claimName" $claimName))) -}}
+{{- end -}}
+
+{{- $configSecretName := include "garagehq.configSecretName" . -}}
+{{- $configVolume := dict "name" "garage-config" "secret" (dict "secretName" $configSecretName) -}}
+{{- $existingVolumes := default (list) $statefulset.volumes -}}
+{{- $_ := set $statefulset "volumes" (concat $existingVolumes (list $configVolume)) -}}
+
+{{- $configMount := dict "name" "garage-config" "mountPath" "/etc/garage.toml" "subPath" .Values.configSecret.key "readOnly" true -}}
+{{- $existingMounts := default (list) $statefulset.volumeMounts -}}
+{{- $_ := set $statefulset "volumeMounts" (concat $existingMounts (list $configMount)) -}}
+
+{{ include "chart-library.snippets.statefulset" (dict "context" . "service" .Values.service "statefulset" $statefulset) }}

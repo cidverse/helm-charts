@@ -1,0 +1,53 @@
+garage:
+  replicationFactor: 1
+  rpc:
+    # Generate a new key with: openssl rand -hex 32
+    secret: "d4f0a8c1b29e7f3654a1c9e0f2d8b7a63c5e1f0a9b2d4c6e8f1a3b5c7d9e0f12"
+
+statefulset:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: docker.io/dxflrs/garage
+    tag: "v2.3.0"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 2Gi
+
+persistence:
+  enabled: false
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    # cert-manager
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+    # openshift
+    route.openshift.io/termination: edge
+    route.openshift.io/insecure-policy: Redirect
+
+  hosts:
+  - host: s3-garage.example.local
+    paths:
+    - path: /
+      pathType: Prefix
+  # cert-manager, empty for openshift
+  tls:
+  - secretName: garagehq-tls
+    hosts:
+      - s3-garage.example.local
+
+# For openshift, set route to true and ingress to false
+route:
+  enabled: false
+  host: s3-garage.example.local
+  tls:
+    enabled: true
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

@@ -1,0 +1,12 @@
+1. Garage S3 endpoint:
+  echo "{{ include "chart-library.notes.primaryEndpoint" (dict "context" . "route" .Values.route "ingress" .Values.ingress "service" .Values.service "routeProtocol" "https" "ingressProtocol" "http" "portIndex" 0) }}"
+
+2. Check cluster status from first pod:
+  kubectl exec --stdin --tty -n {{ .Release.Namespace }} {{ include "chart-library.fullname" . }}-0 -- ./garage status
+
+3. Get node ID from first pod:
+  kubectl exec --stdin --tty -n {{ .Release.Namespace }} {{ include "chart-library.fullname" . }}-0 -- ./garage node id
+
+4. Initialize layout (replace placeholders with your values):
+  kubectl exec --stdin --tty -n {{ .Release.Namespace }} {{ include "chart-library.fullname" . }}-0 -- ./garage layout assign -z <zone-name|garage> -c <capacity> <nodeId>
+  kubectl exec --stdin --tty -n {{ .Release.Namespace }} {{ include "chart-library.fullname" . }}-0 -- ./garage layout apply --version 1

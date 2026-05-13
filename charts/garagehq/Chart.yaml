@@ -1,0 +1,33 @@
+apiVersion: v2
+
+# metadata
+name: garagehq
+description: |
+  Garage (GarageHQ) S3-compatible object storage for Kubernetes and OpenShift.
+type: application
+keywords:
+- garage
+- garagehq
+- s3
+- object-storage
+- openshift
+maintainers:
+- name: CIDVerse
+  url: https://github.com/cidverse
+sources:
+- https://garagehq.deuxfleurs.fr/
+- https://github.com/cidverse/helm-charts/tree/main/charts/garagehq
+
+# version
+version: "0.1.0"
+appVersion: "2.3.0"
+
+# annotations
+annotations:
+  artifacthub.io/category: storage
+
+# dependencies
+dependencies:
+- name: chart-library
+  version: "1.x.x"
+  repository: file://../chart-library

@@ -90,7 +90,8 @@ persistence:
     - ReadWriteOnce
   size: 10Gi
   storageClassName:
-  annotations: {}
+  annotations:
+    helm.sh/resource-policy: keep
   labels: {}
   volumeMode: Filesystem
 

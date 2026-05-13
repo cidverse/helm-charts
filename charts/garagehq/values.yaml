@@ -1,0 +1,153 @@
+global:
+  imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+garage:
+  metadataDir: /var/lib/garage/meta
+  dataDir: /var/lib/garage/data
+  dbEngine: lmdb
+  blockSize: "1048576"
+  consistencyMode: consistent
+  metadataAutoSnapshotInterval: 6h
+  replicationFactor: 1
+  compressionLevel: 2
+  bootstrapPeers: []
+  additionalTopLevelConfig: ""
+  rpc:
+    bindAddr: "[::]:3901"
+    publicAddr: ""
+    secret: "0000000000000000000000000000000000000000000000000000000000000000"
+  kubernetesDiscovery:
+    enabled: false
+    skipCrd: true
+  s3Api:
+    region: garage
+    bindAddr: "[::]:3900"
+    rootDomain: ""
+  s3Web:
+    enabled: false
+    bindAddr: "[::]:3902"
+    rootDomain: ""
+    index: index.html
+  admin:
+    bindAddr: "[::]:3903"
+
+configSecret:
+  create: true
+  name: ""
+  key: garage.toml
+
+statefulset:
+  enabled: true
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  image:
+    repository: docker.io/dxflrs/garage
+    tag: "v2.3.0"
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  env: []
+  extraEnv: []
+  envFrom: []
+  extraEnvFrom: []
+  startupProbe:
+    tcpSocket:
+      port: 3900
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    failureThreshold: 30
+    timeoutSeconds: 1
+  livenessProbe:
+    tcpSocket:
+      port: 3900
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 1
+  readinessProbe:
+    tcpSocket:
+      port: 3900
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 1
+  resources: {}
+  volumeMounts:
+  - name: data
+    mountPath: /var/lib/garage
+  volumes:
+  - name: data
+    emptyDir: {}
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+persistence:
+  enabled: false
+  existingClaim: ""
+  name: ""
+  nameSuffix: data
+  accessModes:
+  - ReadWriteOnce
+  size: 20Gi
+  storageClassName:
+  annotations:
+    helm.sh/resource-policy: keep
+  labels: {}
+  volumeMode: Filesystem
+
+service:
+  type: ClusterIP
+  ports:
+  - name: s3
+    port: 3900
+    targetPort: 3900
+    protocol: TCP
+  - name: rpc
+    port: 3901
+    targetPort: 3901
+    protocol: TCP
+  - name: web
+    port: 3902
+    targetPort: 3902
+    protocol: TCP
+  - name: admin
+    port: 3903
+    targetPort: 3903
+    protocol: TCP
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+  - host: garage.local
+    paths:
+    - path: /
+      pathType: Prefix
+  tls: []
+
+route:
+  enabled: false
+  host: ""
+  wildcardPolicy: None
+  annotations: {}
+  tls:
+    enabled: false
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
