@@ -28,4 +28,7 @@ spec:
     {{- end }}
   selector:
     {{- include "chart-library.selectorLabels" $root | nindent 4 }}
+    {{- with $svc.selectorLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 {{- end -}}

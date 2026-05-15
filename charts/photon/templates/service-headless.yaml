@@ -1,0 +1,3 @@
+{{- if .Values.statefulset.enabled }}
+{{ include "chart-library.snippets.serviceHeadless" (dict "context" . "service" .Values.service) }}
+{{- end }}

@@ -1,0 +1,47 @@
+statefulset:
+  podSecurityContext: {}
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+  image:
+    pullPolicy: Always
+  initContainers:
+    photon-init:
+      image:
+        pullPolicy: Always
+  extraInitContainers: []
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "2"
+      memory: 6Gi
+
+persistence:
+  enabled: true
+  size: 120Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    # cert-manager
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+    # openshift
+    route.openshift.io/termination: edge
+    route.openshift.io/insecure-policy: Redirect
+  hosts:
+  - host: photon.example.com
+    paths:
+    - path: /
+      pathType: Prefix
+  # tls
+  tls:
+  - secretName: photon-tls
+    hosts:
+      - photon.example.com

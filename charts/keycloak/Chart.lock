@@ -1,6 +1,6 @@
 dependencies:
 - name: chart-library
   repository: file://../chart-library
-  version: 1.0.2
-digest: sha256:a614b5232655dbb958b93f825bbe10abdf52f36865d7c22053ab31700b84e2e9
-generated: "2026-05-13T16:04:55.086043346Z"
+  version: 1.2.0
+digest: sha256:e1fb903d07264c7dfd268503026345da38045c2b71f24600a84e4c75ca64e061
+generated: "2026-05-13T23:08:29.688440117Z"

@@ -1,0 +1,15 @@
+1. Photon endpoint:
+  echo "{{ include "chart-library.notes.primaryEndpoint" (dict "context" . "route" .Values.route "ingress" .Values.ingress "service" .Values.service "routeProtocol" "https" "ingressProtocol" "http" "portIndex" 0) }}"
+
+2. Follow startup logs:
+  kubectl logs -n {{ .Release.Namespace }} statefulset/{{ include "chart-library.fullname" . }} -c {{ .Chart.Name }} -f
+
+3. Follow init container logs (download step):
+  kubectl logs -n {{ .Release.Namespace }} statefulset/{{ include "chart-library.fullname" . }} -c photon-init -f
+  # add --previous if init container restarted
+
+4. OpenShift (oc) init logs:
+  oc logs -n {{ .Release.Namespace }} statefulset/{{ include "chart-library.fullname" . }} -c photon-init -f
+
+5. Test API in-cluster:
+  curl "http://{{ include "chart-library.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:2322/api?q=Berlin"

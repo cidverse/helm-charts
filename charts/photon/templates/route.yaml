@@ -1,0 +1,1 @@
+{{ include "chart-library.snippets.route" (dict "context" . "route" .Values.route "service" .Values.service) }}

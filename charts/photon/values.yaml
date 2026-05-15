@@ -1,0 +1,163 @@
+global:
+  imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+statefulset:
+  enabled: true
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  image:
+    repository: ghcr.io/cidverse/photon
+    # Defaults to .Chart.AppVersion when empty.
+    tag: ""
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  initContainers:
+    photon-init:
+      enabled: true
+      image:
+        repository: ghcr.io/cidverse/photon
+        # Defaults to statefulset.image.tag, then .Chart.AppVersion when empty.
+        tag: ""
+        pullPolicy: IfNotPresent
+        pullSecrets: []
+      command:
+      - /bin/photon-downloader
+      securityContext:
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+      env:
+      - name: PHOTON_DATA_DIR
+        value: /data
+      - name: DB_DUMP_VARIANT
+        value: europe/germany/photon-db-germany-1.0-latest
+      - name: BASE_URL
+        value: https://download1.graphhopper.com/public
+      - name: DATA_TMP_DIR
+        value: /data/.tmp
+      - name: SKIP_MD5_CHECK
+        value: "false"
+      - name: DB_DUMP_FORCE_DOWNLOAD
+        value: "false"
+      extraEnv: []
+      envFrom: []
+      extraEnvFrom: []
+      volumeMounts:
+      - name: data
+        mountPath: /data
+      resources: {}
+  extraInitContainers: []
+  env:
+  - name: PHOTON_DATA_DIR
+    value: /data
+  extraEnv: []
+  envFrom: []
+  extraEnvFrom: []
+  startupProbe:
+    httpGet:
+      path: /status
+      port: 2322
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 90
+    timeoutSeconds: 5
+  livenessProbe:
+    httpGet:
+      path: /status
+      port: 2322
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    timeoutSeconds: 5
+  readinessProbe:
+    httpGet:
+      path: /status
+      port: 2322
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+  resources:
+    requests:
+      cpu: "1"
+      memory: 4Gi
+    limits:
+      cpu: "2"
+      memory: 12Gi
+  volumeMounts:
+  - name: data
+    mountPath: /data
+  volumes:
+  - name: data
+    emptyDir: {}
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+persistence:
+  enabled: true
+  existingClaim: ""
+  name: ""
+  nameSuffix: data
+  accessModes:
+  - ReadWriteOnce
+  size: 120Gi
+  storageClassName:
+  annotations:
+    helm.sh/resource-policy: keep
+  labels: {}
+  volumeMode: Filesystem
+
+service:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 2322
+    targetPort: 2322
+    protocol: TCP
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+  - host: photon.local
+    paths:
+    - path: /
+      pathType: Prefix
+  tls: []
+
+route:
+  enabled: false
+  host: ""
+  wildcardPolicy: None
+  targetPort: http
+  annotations: {}
+  labels: {}
+  tls:
+    enabled: false
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

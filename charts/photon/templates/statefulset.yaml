@@ -1,0 +1,15 @@
+{{- $statefulset := deepCopy .Values.statefulset -}}
+
+{{- if .Values.persistence.enabled -}}
+  {{- $claimName := .Values.persistence.existingClaim | default (include "chart-library.pvcName" (dict "context" . "pvc" .Values.persistence)) -}}
+  {{- $existingVolumes := default (list) $statefulset.volumes -}}
+  {{- $mergedVolumes := list -}}
+  {{- range $volume := $existingVolumes -}}
+    {{- if ne $volume.name "data" -}}
+      {{- $mergedVolumes = append $mergedVolumes $volume -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $mergedVolumes = append $mergedVolumes (dict "name" "data" "persistentVolumeClaim" (dict "claimName" $claimName)) -}}
+  {{- $_ := set $statefulset "volumes" $mergedVolumes -}}
+{{- end -}}
+{{ include "chart-library.snippets.statefulset" (dict "context" . "service" .Values.service "statefulset" $statefulset) }}

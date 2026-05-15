@@ -3,4 +3,4 @@ dependencies:
   repository: file://../chart-library
   version: 1.2.0
 digest: sha256:e1fb903d07264c7dfd268503026345da38045c2b71f24600a84e4c75ca64e061
-generated: "2026-05-13T23:08:30.07529348Z"
+generated: "2026-05-15T22:12:25.055067856Z"

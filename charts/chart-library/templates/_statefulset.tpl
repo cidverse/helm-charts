@@ -13,6 +13,64 @@ Usage:
 {{- $context := .context -}}
 {{- $svc := .service -}}
 {{- $sts := .statefulset -}}
+{{- $resolvedInitContainers := list -}}
+{{- $resolvedInitImages := list -}}
+
+{{- if eq (kindOf $sts.initContainers) "map" -}}
+  {{- range $name := keys $sts.initContainers | sortAlpha -}}
+    {{- $init := index $sts.initContainers $name -}}
+    {{- $enabled := true -}}
+    {{- if hasKey $init "enabled" -}}
+      {{- $enabled = $init.enabled -}}
+    {{- end -}}
+    {{- if $enabled -}}
+      {{- $image := default (dict) $init.image -}}
+      {{- $repository := $image.repository | default $sts.image.repository -}}
+      {{- $tag := $image.tag | default $sts.image.tag | default $context.Chart.AppVersion -}}
+      {{- $pullPolicy := $image.pullPolicy | default $sts.image.pullPolicy -}}
+
+      {{- $container := dict
+        "name" $name
+        "image" (printf "%s:%s" $repository $tag)
+        "imagePullPolicy" $pullPolicy
+      -}}
+
+      {{- with $init.command -}}
+        {{- $_ := set $container "command" . -}}
+      {{- end -}}
+      {{- with $init.args -}}
+        {{- $_ := set $container "args" . -}}
+      {{- end -}}
+
+      {{- $env := concat (default (list) $init.env) (default (list) $init.extraEnv) -}}
+      {{- if gt (len $env) 0 -}}
+        {{- $_ := set $container "env" $env -}}
+      {{- end -}}
+
+      {{- $envFrom := concat (default (list) $init.envFrom) (default (list) $init.extraEnvFrom) -}}
+      {{- if gt (len $envFrom) 0 -}}
+        {{- $_ := set $container "envFrom" $envFrom -}}
+      {{- end -}}
+
+      {{- with $init.securityContext -}}
+        {{- $_ := set $container "securityContext" . -}}
+      {{- end -}}
+      {{- with $init.volumeMounts -}}
+        {{- $_ := set $container "volumeMounts" . -}}
+      {{- end -}}
+      {{- with $init.resources -}}
+        {{- $_ := set $container "resources" . -}}
+      {{- end -}}
+
+      {{- $resolvedInitContainers = append $resolvedInitContainers $container -}}
+      {{- $resolvedInitImages = append $resolvedInitImages (dict "pullSecrets" (default (list) $image.pullSecrets)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- else if eq (kindOf $sts.initContainers) "slice" -}}
+  {{- $resolvedInitContainers = $sts.initContainers -}}
+{{- end -}}
+
+{{- $resolvedInitContainers = concat $resolvedInitContainers (default (list) $sts.extraInitContainers) -}}
 {{- if $sts.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -29,6 +87,9 @@ spec:
   selector:
     matchLabels:
       {{- include "chart-library.selectorLabels" $context | nindent 6 }}
+      {{- with $sts.selectorLabels }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
   template:
     metadata:
       {{- with $sts.podAnnotations }}
@@ -37,14 +98,21 @@ spec:
       {{- end }}
       labels:
         {{- include "chart-library.labels" $context | nindent 8 }}
+        {{- with $sts.selectorLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with $sts.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "chart-library.resolvePullSecrets" (dict "images" (list $sts.image) "context" $context) | nindent 6 }}
+      {{- include "chart-library.resolvePullSecrets" (dict "images" (concat (list $sts.image) $resolvedInitImages) "context" $context) | nindent 6 }}
       serviceAccountName: {{ include "chart-library.serviceAccountName" (dict "context" $context "serviceAccount" $context.Values.serviceAccount) }}
       {{- with $sts.podSecurityContext }}
       securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $resolvedInitContainers }}
+      initContainers:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
