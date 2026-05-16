@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.9.0",
+      "version": "0.11.0",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 10,
@@ -44,6 +44,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -85,13 +88,13 @@
           },
           {
             "id": "1",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
+            "name": "helm-build [garagehq]",
+            "slug": "helm-build-garagehq",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
             "run-if-changed": [
               "**/*"
             ],
@@ -103,6 +106,9 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -144,113 +150,7 @@
             "order": 1
           },
           {
-            "id": "2",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
-            "stage": "lint",
-            "scope": "module",
-            "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {},
-            "order": 2
-          },
-          {
-            "id": "3",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
-            "stage": "lint",
-            "scope": "module",
-            "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {},
-            "order": 3
-          },
-          {
-            "id": "4",
+            "id": "10",
             "name": "gitleaks-scan",
             "slug": "gitleaks-scan",
             "stage": "scan",
@@ -265,6 +165,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -291,6 +194,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -302,10 +208,10 @@
                 }
               ]
             },
-            "order": 4
+            "order": 2
           },
           {
-            "id": "5",
+            "id": "11",
             "name": "semgrep-scan",
             "slug": "semgrep-scan",
             "stage": "scan",
@@ -334,6 +240,9 @@
                   "host": "semgrep.dev:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -360,6 +269,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -371,10 +283,10 @@
                 }
               ]
             },
-            "order": 5
+            "order": 3
           },
           {
-            "id": "6",
+            "id": "12",
             "name": "trivyfs-scan",
             "slug": "trivyfs-scan",
             "stage": "scan",
@@ -392,6 +304,9 @@
                   "host": "mirror.gcr.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -418,6 +333,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -429,10 +347,10 @@
                 }
               ]
             },
-            "order": 6
+            "order": 4
           },
           {
-            "id": "7",
+            "id": "13",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
             "stage": "scan",
@@ -484,6 +402,9 @@
                   "host": "scanner.sonarcloud.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -533,10 +454,10 @@
               ]
             },
             "outputs": {},
-            "order": 7
+            "order": 5
           },
           {
-            "id": "8",
+            "id": "14",
             "name": "zizmor-scan",
             "slug": "zizmor-scan",
             "stage": "scan",
@@ -564,6 +485,75 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ],
+              "resources": [
+                "security-events"
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "2",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -597,44 +587,35 @@
             "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "sarif"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
-            "order": 8
+            "order": 7
           },
           {
-            "id": "9",
-            "name": "codecov-upload",
-            "slug": "codecov-upload",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/codecov-upload",
+            "id": "3",
+            "name": "helm-build [photon]",
+            "slug": "helm-build-photon",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
             "access": {
-              "env": [
-                {
-                  "name": "CODECOV_TOKEN",
-                  "description": "The Codecov token to use for uploading the report.",
-                  "required": true,
-                  "secret": true
-                }
-              ],
               "executables": [
                 {
-                  "name": "codecov",
-                  "constraint": "\u003e= 0.0.0-0"
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
                 }
               ],
               "network": [
                 {
-                  "host": "ingest.codecov.io:443"
-                },
-                {
-                  "host": "storage.googleapis.com:443"
-                },
-                {
-                  "host": "api.codecov.io:443"
+                  "host": "keyserver.ubuntu.com:443"
                 },
                 {
                   "host": "github.com:443"
@@ -665,24 +646,359 @@
                 }
               ]
             },
-            "inputs": {
+            "inputs": {},
+            "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "junit"
-                },
-                {
-                  "type": "report",
-                  "format": "jacoco"
-                },
-                {
-                  "type": "report",
-                  "format": "cobertura"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
-            "outputs": {},
+            "order": 8
+          },
+          {
+            "id": "4",
+            "name": "helm-build [postgresql]",
+            "slug": "helm-build-postgresql",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 9
+          },
+          {
+            "id": "5",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 10
+          },
+          {
+            "id": "6",
+            "name": "helm-lint [garagehq]",
+            "slug": "helm-lint-garagehq",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 11
+          },
+          {
+            "id": "7",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 12
+          },
+          {
+            "id": "8",
+            "name": "helm-lint [photon]",
+            "slug": "helm-lint-photon",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 13
+          },
+          {
+            "id": "9",
+            "name": "helm-lint [postgresql]",
+            "slug": "helm-lint-postgresql",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 14
           }
         ]
       },
@@ -707,19 +1023,21 @@
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
+          "version": "v7.0.1",
+          "hash": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.16.0",
-          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
+          "version": "v2.19.3",
+          "hash": "ab7a9404c0f3da075243ca237b5fac12c98deaa5"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.9.0"
+          "version": "0.11.0",
+          "hash": "54a17e1d59e924e4e612efc33fc33a855806e3aaf120dec88fca94101e452beb",
+          "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
       "ignore_files": [
@@ -734,7 +1052,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.9.0",
+      "version": "0.11.0",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 10,
@@ -775,6 +1093,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -816,13 +1137,13 @@
           },
           {
             "id": "1",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
+            "name": "helm-build [garagehq]",
+            "slug": "helm-build-garagehq",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
             "run-if-changed": [
               "**/*"
             ],
@@ -834,6 +1155,9 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -875,113 +1199,7 @@
             "order": 1
           },
           {
-            "id": "2",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
-            "stage": "lint",
-            "scope": "module",
-            "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {},
-            "order": 2
-          },
-          {
-            "id": "3",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
-            "stage": "lint",
-            "scope": "module",
-            "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {},
-            "order": 3
-          },
-          {
-            "id": "4",
+            "id": "10",
             "name": "gitleaks-scan",
             "slug": "gitleaks-scan",
             "stage": "scan",
@@ -996,6 +1214,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1022,6 +1243,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -1033,10 +1257,10 @@
                 }
               ]
             },
-            "order": 4
+            "order": 2
           },
           {
-            "id": "5",
+            "id": "11",
             "name": "semgrep-scan",
             "slug": "semgrep-scan",
             "stage": "scan",
@@ -1065,6 +1289,9 @@
                   "host": "semgrep.dev:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1091,6 +1318,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -1102,10 +1332,10 @@
                 }
               ]
             },
-            "order": 5
+            "order": 3
           },
           {
-            "id": "6",
+            "id": "12",
             "name": "trivyfs-scan",
             "slug": "trivyfs-scan",
             "stage": "scan",
@@ -1123,6 +1353,9 @@
                   "host": "mirror.gcr.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1149,6 +1382,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -1160,10 +1396,10 @@
                 }
               ]
             },
-            "order": 6
+            "order": 4
           },
           {
-            "id": "7",
+            "id": "13",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
             "stage": "scan",
@@ -1215,6 +1451,9 @@
                   "host": "scanner.sonarcloud.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1264,10 +1503,10 @@
               ]
             },
             "outputs": {},
-            "order": 7
+            "order": 5
           },
           {
-            "id": "8",
+            "id": "14",
             "name": "zizmor-scan",
             "slug": "zizmor-scan",
             "stage": "scan",
@@ -1295,6 +1534,75 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ],
+              "resources": [
+                "security-events"
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "2",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -1328,44 +1636,35 @@
             "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "sarif"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
-            "order": 8
+            "order": 7
           },
           {
-            "id": "9",
-            "name": "codecov-upload",
-            "slug": "codecov-upload",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/codecov-upload",
+            "id": "3",
+            "name": "helm-build [photon]",
+            "slug": "helm-build-photon",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
             "access": {
-              "env": [
-                {
-                  "name": "CODECOV_TOKEN",
-                  "description": "The Codecov token to use for uploading the report.",
-                  "required": true,
-                  "secret": true
-                }
-              ],
               "executables": [
                 {
-                  "name": "codecov",
-                  "constraint": "\u003e= 0.0.0-0"
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
                 }
               ],
               "network": [
                 {
-                  "host": "ingest.codecov.io:443"
-                },
-                {
-                  "host": "storage.googleapis.com:443"
-                },
-                {
-                  "host": "api.codecov.io:443"
+                  "host": "keyserver.ubuntu.com:443"
                 },
                 {
                   "host": "github.com:443"
@@ -1396,24 +1695,359 @@
                 }
               ]
             },
-            "inputs": {
+            "inputs": {},
+            "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "junit"
-                },
-                {
-                  "type": "report",
-                  "format": "jacoco"
-                },
-                {
-                  "type": "report",
-                  "format": "cobertura"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
-            "outputs": {},
+            "order": 8
+          },
+          {
+            "id": "4",
+            "name": "helm-build [postgresql]",
+            "slug": "helm-build-postgresql",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 9
+          },
+          {
+            "id": "5",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 10
+          },
+          {
+            "id": "6",
+            "name": "helm-lint [garagehq]",
+            "slug": "helm-lint-garagehq",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 11
+          },
+          {
+            "id": "7",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 12
+          },
+          {
+            "id": "8",
+            "name": "helm-lint [photon]",
+            "slug": "helm-lint-photon",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 13
+          },
+          {
+            "id": "9",
+            "name": "helm-lint [postgresql]",
+            "slug": "helm-lint-postgresql",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 14
           }
         ]
       },
@@ -1438,19 +2072,21 @@
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
+          "version": "v7.0.1",
+          "hash": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.16.0",
-          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
+          "version": "v2.19.3",
+          "hash": "ab7a9404c0f3da075243ca237b5fac12c98deaa5"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.9.0"
+          "version": "0.11.0",
+          "hash": "54a17e1d59e924e4e612efc33fc33a855806e3aaf120dec88fca94101e452beb",
+          "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
       "ignore_files": [
@@ -1465,7 +2101,7 @@
       ]
     },
     "Release": {
-      "version": "0.9.0",
+      "version": "0.11.0",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 10,
@@ -1510,6 +2146,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1551,13 +2190,13 @@
           },
           {
             "id": "1",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
+            "name": "helm-build [garagehq]",
+            "slug": "helm-build-garagehq",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
             "run-if-changed": [
               "**/*"
             ],
@@ -1569,6 +2208,9 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -1611,19 +2253,27 @@
           },
           {
             "id": "2",
-            "name": "gitleaks-scan",
-            "slug": "gitleaks-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/gitleaks-scan",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
             "access": {
               "executables": [
                 {
-                  "name": "gitleaks",
-                  "constraint": "\u003e= 0.0.0-0"
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -1657,8 +2307,8 @@
             "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "sarif"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
@@ -1666,6 +2316,193 @@
           },
           {
             "id": "3",
+            "name": "helm-build [photon]",
+            "slug": "helm-build-photon",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
+            "order": 3
+          },
+          {
+            "id": "4",
+            "name": "helm-build [postgresql]",
+            "slug": "helm-build-postgresql",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
+            "order": 4
+          },
+          {
+            "id": "5",
+            "name": "gitleaks-scan",
+            "slug": "gitleaks-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/gitleaks-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "gitleaks",
+                  "constraint": "\u003e= 0.0.0-0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ],
+              "resources": [
+                "security-events"
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 5
+          },
+          {
+            "id": "6",
             "name": "semgrep-scan",
             "slug": "semgrep-scan",
             "stage": "scan",
@@ -1694,6 +2531,9 @@
                   "host": "semgrep.dev:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1720,6 +2560,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -1731,10 +2574,10 @@
                 }
               ]
             },
-            "order": 3
+            "order": 6
           },
           {
-            "id": "4",
+            "id": "7",
             "name": "trivyfs-scan",
             "slug": "trivyfs-scan",
             "stage": "scan",
@@ -1752,6 +2595,9 @@
                   "host": "mirror.gcr.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1778,6 +2624,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -1789,10 +2638,10 @@
                 }
               ]
             },
-            "order": 4
+            "order": 7
           },
           {
-            "id": "5",
+            "id": "8",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
             "stage": "scan",
@@ -1844,6 +2693,9 @@
                   "host": "scanner.sonarcloud.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1893,10 +2745,10 @@
               ]
             },
             "outputs": {},
-            "order": 5
+            "order": 8
           },
           {
-            "id": "6",
+            "id": "9",
             "name": "zizmor-scan",
             "slug": "zizmor-scan",
             "stage": "scan",
@@ -1925,6 +2777,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -1951,6 +2806,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -1962,110 +2820,34 @@
                 }
               ]
             },
-            "order": 6
+            "order": 9
           },
           {
-            "id": "7",
-            "name": "codecov-upload",
-            "slug": "codecov-upload",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/codecov-upload",
-            "access": {
-              "env": [
-                {
-                  "name": "CODECOV_TOKEN",
-                  "description": "The Codecov token to use for uploading the report.",
-                  "required": true,
-                  "secret": true
-                }
-              ],
-              "executables": [
-                {
-                  "name": "codecov",
-                  "constraint": "\u003e= 0.0.0-0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "ingest.codecov.io:443"
-                },
-                {
-                  "host": "storage.googleapis.com:443"
-                },
-                {
-                  "host": "api.codecov.io:443"
-                },
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {
-              "artifacts": [
-                {
-                  "type": "report",
-                  "format": "junit"
-                },
-                {
-                  "type": "report",
-                  "format": "jacoco"
-                },
-                {
-                  "type": "report",
-                  "format": "cobertura"
-                }
-              ]
-            },
-            "outputs": {},
-            "order": 7
-          },
-          {
-            "id": "8",
+            "id": "10",
             "name": "changelog-generate",
             "slug": "changelog-generate",
             "stage": "publish",
             "scope": "project",
             "action": "builtin://actions/changelog-generate",
             "run-after": [
-              "codecov-upload",
               "gitleaks-scan",
               "helm-build-chart-library",
+              "helm-build-garagehq",
               "helm-build-keycloak",
+              "helm-build-photon",
+              "helm-build-postgresql",
               "semgrep-scan",
               "sonarqube-scan",
               "trivyfs-scan",
               "zizmor-scan"
             ],
             "run-after-by-name": [
-              "codecov-upload",
               "gitleaks-scan",
               "helm-build [chart-library]",
+              "helm-build [garagehq]",
               "helm-build [keycloak]",
+              "helm-build [photon]",
+              "helm-build [postgresql]",
               "semgrep-scan",
               "sonarqube-scan",
               "trivyfs-scan",
@@ -2073,6 +2855,9 @@
             ],
             "access": {
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -2110,10 +2895,10 @@
                 }
               ]
             },
-            "order": 8
+            "order": 10
           },
           {
-            "id": "9",
+            "id": "11",
             "name": "github-release-publish",
             "slug": "github-release-publish",
             "stage": "publish",
@@ -2121,10 +2906,12 @@
             "action": "builtin://actions/github-release-publish",
             "run-after": [
               "changelog-generate",
-              "codecov-upload",
               "gitleaks-scan",
               "helm-build-chart-library",
+              "helm-build-garagehq",
               "helm-build-keycloak",
+              "helm-build-photon",
+              "helm-build-postgresql",
               "semgrep-scan",
               "sonarqube-scan",
               "trivyfs-scan",
@@ -2132,10 +2919,12 @@
             ],
             "run-after-by-name": [
               "changelog-generate",
-              "codecov-upload",
               "gitleaks-scan",
               "helm-build [chart-library]",
+              "helm-build [garagehq]",
               "helm-build [keycloak]",
+              "helm-build [photon]",
+              "helm-build [postgresql]",
               "semgrep-scan",
               "sonarqube-scan",
               "trivyfs-scan",
@@ -2157,6 +2946,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -2183,6 +2975,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "releases"
               ]
             },
             "inputs": {
@@ -2196,7 +2991,7 @@
               ]
             },
             "outputs": {},
-            "order": 9
+            "order": 11
           }
         ]
       },
@@ -2221,19 +3016,21 @@
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
+          "version": "v7.0.1",
+          "hash": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.16.0",
-          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
+          "version": "v2.19.3",
+          "hash": "ab7a9404c0f3da075243ca237b5fac12c98deaa5"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.9.0"
+          "version": "0.11.0",
+          "hash": "54a17e1d59e924e4e612efc33fc33a855806e3aaf120dec88fca94101e452beb",
+          "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
       "ignore_files": [
@@ -2248,7 +3045,7 @@
       ]
     },
     "Main": {
-      "version": "0.9.0",
+      "version": "0.11.0",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 10,
@@ -2292,6 +3089,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -2333,13 +3133,13 @@
           },
           {
             "id": "1",
-            "name": "helm-build [keycloak]",
-            "slug": "helm-build-keycloak",
+            "name": "helm-build [garagehq]",
+            "slug": "helm-build-garagehq",
             "stage": "build",
             "scope": "module",
             "action": "builtin://actions/helm-build",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
             "run-if-changed": [
               "**/*"
             ],
@@ -2351,6 +3151,9 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -2392,113 +3195,7 @@
             "order": 1
           },
           {
-            "id": "2",
-            "name": "helm-lint [chart-library]",
-            "slug": "helm-lint-chart-library",
-            "stage": "lint",
-            "scope": "module",
-            "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-chart-library-chart-yaml",
-            "module-dir": "charts/chart-library",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {},
-            "order": 2
-          },
-          {
-            "id": "3",
-            "name": "helm-lint [keycloak]",
-            "slug": "helm-lint-keycloak",
-            "stage": "lint",
-            "scope": "module",
-            "action": "builtin://actions/helm-lint",
-            "module": "helm-charts-keycloak-chart-yaml",
-            "module-dir": "charts/keycloak",
-            "run-if-changed": [
-              "**/*"
-            ],
-            "access": {
-              "executables": [
-                {
-                  "name": "helm",
-                  "constraint": "\u003e=3.16.0"
-                }
-              ],
-              "network": [
-                {
-                  "host": "github.com:443"
-                },
-                {
-                  "host": "api.github.com:443"
-                },
-                {
-                  "host": "codeload.github.com:443"
-                },
-                {
-                  "host": "uploads.github.com:443"
-                },
-                {
-                  "host": "objects.githubusercontent.com:443"
-                },
-                {
-                  "host": "raw.githubusercontent.com:443"
-                },
-                {
-                  "host": "release-assets.githubusercontent.com:443"
-                },
-                {
-                  "host": "ghcr.io:443"
-                },
-                {
-                  "host": "pkg-containers.githubusercontent.com:443"
-                }
-              ]
-            },
-            "inputs": {},
-            "outputs": {},
-            "order": 3
-          },
-          {
-            "id": "4",
+            "id": "10",
             "name": "gitleaks-scan",
             "slug": "gitleaks-scan",
             "stage": "scan",
@@ -2513,6 +3210,9 @@
               ],
               "network": [
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -2539,6 +3239,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -2550,10 +3253,10 @@
                 }
               ]
             },
-            "order": 4
+            "order": 2
           },
           {
-            "id": "5",
+            "id": "11",
             "name": "semgrep-scan",
             "slug": "semgrep-scan",
             "stage": "scan",
@@ -2582,6 +3285,9 @@
                   "host": "semgrep.dev:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -2608,6 +3314,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -2619,10 +3328,10 @@
                 }
               ]
             },
-            "order": 5
+            "order": 3
           },
           {
-            "id": "6",
+            "id": "12",
             "name": "trivyfs-scan",
             "slug": "trivyfs-scan",
             "stage": "scan",
@@ -2640,6 +3349,9 @@
                   "host": "mirror.gcr.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -2666,6 +3378,9 @@
                 {
                   "host": "pkg-containers.githubusercontent.com:443"
                 }
+              ],
+              "resources": [
+                "security-events"
               ]
             },
             "inputs": {},
@@ -2677,10 +3392,10 @@
                 }
               ]
             },
-            "order": 6
+            "order": 4
           },
           {
-            "id": "7",
+            "id": "13",
             "name": "sonarqube-scan",
             "slug": "sonarqube-scan",
             "stage": "scan",
@@ -2732,6 +3447,9 @@
                   "host": "scanner.sonarcloud.io:443"
                 },
                 {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
                   "host": "github.com:443"
                 },
                 {
@@ -2781,10 +3499,10 @@
               ]
             },
             "outputs": {},
-            "order": 7
+            "order": 5
           },
           {
-            "id": "8",
+            "id": "14",
             "name": "zizmor-scan",
             "slug": "zizmor-scan",
             "stage": "scan",
@@ -2812,6 +3530,75 @@
                 }
               ],
               "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ],
+              "resources": [
+                "security-events"
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "2",
+            "name": "helm-build [keycloak]",
+            "slug": "helm-build-keycloak",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
                 {
                   "host": "github.com:443"
                 },
@@ -2845,44 +3632,35 @@
             "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "sarif"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
-            "order": 8
+            "order": 7
           },
           {
-            "id": "9",
-            "name": "codecov-upload",
-            "slug": "codecov-upload",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/codecov-upload",
+            "id": "3",
+            "name": "helm-build [photon]",
+            "slug": "helm-build-photon",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
             "access": {
-              "env": [
-                {
-                  "name": "CODECOV_TOKEN",
-                  "description": "The Codecov token to use for uploading the report.",
-                  "required": true,
-                  "secret": true
-                }
-              ],
               "executables": [
                 {
-                  "name": "codecov",
-                  "constraint": "\u003e= 0.0.0-0"
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
                 }
               ],
               "network": [
                 {
-                  "host": "ingest.codecov.io:443"
-                },
-                {
-                  "host": "storage.googleapis.com:443"
-                },
-                {
-                  "host": "api.codecov.io:443"
+                  "host": "keyserver.ubuntu.com:443"
                 },
                 {
                   "host": "github.com:443"
@@ -2913,24 +3691,359 @@
                 }
               ]
             },
-            "inputs": {
+            "inputs": {},
+            "outputs": {
               "artifacts": [
                 {
-                  "type": "report",
-                  "format": "junit"
-                },
-                {
-                  "type": "report",
-                  "format": "jacoco"
-                },
-                {
-                  "type": "report",
-                  "format": "cobertura"
+                  "type": "helm-chart",
+                  "format": "tgz"
                 }
               ]
             },
-            "outputs": {},
+            "order": 8
+          },
+          {
+            "id": "4",
+            "name": "helm-build [postgresql]",
+            "slug": "helm-build-postgresql",
+            "stage": "build",
+            "scope": "module",
+            "action": "builtin://actions/helm-build",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "helm-chart",
+                  "format": "tgz"
+                }
+              ]
+            },
             "order": 9
+          },
+          {
+            "id": "5",
+            "name": "helm-lint [chart-library]",
+            "slug": "helm-lint-chart-library",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-chart-library-chart-yaml",
+            "module-dir": "charts/chart-library",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 10
+          },
+          {
+            "id": "6",
+            "name": "helm-lint [garagehq]",
+            "slug": "helm-lint-garagehq",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-garagehq-chart-yaml",
+            "module-dir": "charts/garagehq",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 11
+          },
+          {
+            "id": "7",
+            "name": "helm-lint [keycloak]",
+            "slug": "helm-lint-keycloak",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-keycloak-chart-yaml",
+            "module-dir": "charts/keycloak",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 12
+          },
+          {
+            "id": "8",
+            "name": "helm-lint [photon]",
+            "slug": "helm-lint-photon",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-photon-chart-yaml",
+            "module-dir": "charts/photon",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 13
+          },
+          {
+            "id": "9",
+            "name": "helm-lint [postgresql]",
+            "slug": "helm-lint-postgresql",
+            "stage": "lint",
+            "scope": "module",
+            "action": "builtin://actions/helm-lint",
+            "module": "helm-charts-postgresql-chart-yaml",
+            "module-dir": "charts/postgresql",
+            "run-if-changed": [
+              "**/*"
+            ],
+            "access": {
+              "executables": [
+                {
+                  "name": "helm",
+                  "constraint": "\u003e=3.16.0"
+                }
+              ],
+              "network": [
+                {
+                  "host": "keyserver.ubuntu.com:443"
+                },
+                {
+                  "host": "github.com:443"
+                },
+                {
+                  "host": "api.github.com:443"
+                },
+                {
+                  "host": "codeload.github.com:443"
+                },
+                {
+                  "host": "uploads.github.com:443"
+                },
+                {
+                  "host": "objects.githubusercontent.com:443"
+                },
+                {
+                  "host": "raw.githubusercontent.com:443"
+                },
+                {
+                  "host": "release-assets.githubusercontent.com:443"
+                },
+                {
+                  "host": "ghcr.io:443"
+                },
+                {
+                  "host": "pkg-containers.githubusercontent.com:443"
+                }
+              ]
+            },
+            "inputs": {},
+            "outputs": {},
+            "order": 14
           }
         ]
       },
@@ -2955,19 +4068,21 @@
         "pkg:github-action/actions/upload-artifact": {
           "id": "actions/upload-artifact",
           "type": "github-action",
-          "version": "v7.0.0",
-          "hash": "bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
+          "version": "v7.0.1",
+          "hash": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
         },
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.16.0",
-          "hash": "fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594"
+          "version": "v2.19.3",
+          "hash": "ab7a9404c0f3da075243ca237b5fac12c98deaa5"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.9.0"
+          "version": "0.11.0",
+          "hash": "54a17e1d59e924e4e612efc33fc33a855806e3aaf120dec88fca94101e452beb",
+          "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
       "ignore_files": [
