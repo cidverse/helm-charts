@@ -54,7 +54,7 @@ statefulset:
     #targetMemoryUtilizationPercentage: 80
   image:
     repository: quay.io/keycloak/keycloak
-    tag: 26.6.2-0
+    tag: 26.6.3-0
     pullPolicy: IfNotPresent
     pullSecrets: []
   args: ["start-dev"]
