@@ -30,7 +30,7 @@ statefulset:
     targetCPUUtilizationPercentage: 80
   image:
     repository: docker.io/library/postgres
-    tag: "18.4"
+    tag: "18.6"
     pullPolicy: IfNotPresent
     pullSecrets: []
   defaultEnv:
