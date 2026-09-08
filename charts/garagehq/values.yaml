@@ -56,7 +56,7 @@ statefulset:
     targetCPUUtilizationPercentage: 80
   image:
     repository: docker.io/dxflrs/garage
-    tag: "v2.3.0"
+    tag: "v2.4.1"
     pullPolicy: IfNotPresent
     pullSecrets: []
   env: []
